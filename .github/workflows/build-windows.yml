@@ -26,3 +26,13 @@ jobs:
 
       - name: Run xUnit Test Suite
         run: dotnet test tests/Orva.Billing.Tests/Orva.Billing.Tests.csproj -c Release --no-build --verbosity normal
+
+      - name: Upload Windows EXE
+
+        uses: actions/upload-artifact@v4
+
+        with:
+
+          name: ORVA-v5.6.0-Windows
+
+          path: src/Orva.Desktop/bin/Release/
