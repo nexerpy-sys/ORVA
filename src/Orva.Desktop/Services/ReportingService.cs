@@ -7,6 +7,7 @@ using Orva.Domain;
 using Orva.Domain.Billing;
 using Orva.Infrastructure.Database;
 using Orva.Services.Billing;
+using Orva.ViewModels;
 
 namespace Orva.Services
 {
@@ -694,12 +695,9 @@ ORDER BY rowid ASC;";
                             if (string.Equals(m, "UPI", StringComparison.OrdinalIgnoreCase)) pm = InvoicePaymentMethod.Upi;
                             else if (string.Equals(m, "DEBIT_CARD", StringComparison.OrdinalIgnoreCase)) pm = InvoicePaymentMethod.DebitCard;
                             else if (string.Equals(m, "CREDIT_CARD", StringComparison.OrdinalIgnoreCase)) pm = InvoicePaymentMethod.CreditCard;
-                            record.Tenders.Add(new PaymentTenderViewModel
-                            {
-                                Method = pm,
-                                AmountText = InvoiceCalculator.FormatRupees(amt),
-                                ReferenceText = rf
-                            });
+                            var pmName = pm == InvoicePaymentMethod.Upi ? "UPI" : (pm == InvoicePaymentMethod.DebitCard ? "Debit Card" : (pm == InvoicePaymentMethod.CreditCard ? "Credit Card" : "Cash"));
+                            var pmOpt = new PaymentMethodOption(pm, pmName);
+                            record.Tenders.Add(new PaymentTenderViewModel(new List<PaymentMethodOption> { pmOpt }, pmOpt, amt) { ReferenceText = rf });
                         }
                     }
                 }
