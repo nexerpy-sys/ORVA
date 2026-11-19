@@ -382,8 +382,8 @@ namespace Orva.Controls
             PaperBorder.Width = width;
             PaperBorder.MinHeight = minHeight;
             PaperContent.Padding = padding;
-            ThermalPanel.FontSize = baseFont;
-            PagePanel.FontSize = baseFont;
+            System.Windows.Documents.TextElement.SetFontSize(ThermalPanel, baseFont);
+            System.Windows.Documents.TextElement.SetFontSize(PagePanel, baseFont);
             SmallFontSize = smallFont;
             TinyFontSize = tinyFont;
 

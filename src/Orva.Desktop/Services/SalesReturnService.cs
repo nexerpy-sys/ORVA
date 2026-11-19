@@ -319,18 +319,9 @@ ORDER BY il.created_at_utc ASC;";
                                 requestedByLine.TryGetValue(availableLines[a].InvoiceLineId, out reqSum);
                                 if (availableLines[a].RemainingReturnableMilli > reqSum) { returningAllRemaining = false; break; }
                             }
-                            long sumLines = totalRefund;
                             if (returningAllRemaining) totalRefund = maxInvRefundable;
                             else if (totalRefund > maxInvRefundable) totalRefund = maxInvRefundable;
 
-                            long delta = totalRefund - sumLines;
-                            if (delta != 0L && preparedLines.Count > 0)
-                            {
-                                int lastIdx = preparedLines.Count - 1;
-                                var lastItem = preparedLines[lastIdx];
-                                long adjusted = Math.Max(0L, lastItem.Item4 + delta);
-                                preparedLines[lastIdx] = Tuple.Create(lastItem.Item1, lastItem.Item2, lastItem.Item3, adjusted);
-                            }
                         }
                     }
                 }

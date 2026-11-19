@@ -152,8 +152,8 @@ namespace Orva.ViewModels
                 delegate(object parameter) { return parameter is CartLineViewModel && !_isCommitted && !_isBusy && !_isShutdown; });
 
             AddTenderCommand = new RelayCommand(
-                delegate { ExecuteAddTender(); },
-                delegate { return !_isCommitted && !_isBusy && !_isShutdown; });
+                () => { ExecuteAddTender(); },
+                () => { return !_isCommitted && !_isBusy && !_isShutdown; });
 
             RemoveTenderCommand = new RelayCommand(
                 delegate(object parameter) { RemoveTender(parameter as PaymentTenderViewModel); },
@@ -164,10 +164,10 @@ namespace Orva.ViewModels
                 delegate(object parameter) { return parameter is PaymentTenderViewModel && !_isCommitted && !_isBusy && !_isShutdown; });
 
             FinalizeCommand = new RelayCommand(
-                delegate { ExecuteFinalize(); },
-                delegate { return ComputeGenerateEnabled(); });
+                () => { ExecuteFinalize(); },
+                () => { return ComputeGenerateEnabled(); });
 
-            NewBillCommand = new RelayCommand(delegate { ClearDraft(); }, delegate { return !_isBusy && !_isShutdown; });
+            NewBillCommand = new RelayCommand(() => { ClearDraft(); }, () => { return !_isBusy && !_isShutdown; });
 
             _searchTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(DebounceMilliseconds) };
             _searchTimer.Tick += SearchTimer_Tick;
