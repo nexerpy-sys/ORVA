@@ -1,0 +1,642 @@
+<Application x:Class="Orva.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fx="clr-namespace:Orva.Controls"
+             Startup="Application_Startup">
+    <Application.Resources>
+        <!-- Custom Swiss-Precision 24x24 Vector Icon Geometries (100% Offline, 1.5px Stroke Language) -->
+        <StreamGeometry x:Key="IconHome">M 3,10.5 L 12,3 L 21,10.5 M 5.5,9.5 L 5.5,20 L 18.5,20 L 18.5,9.5 M 10,20 L 10,14 L 14,14 L 14,20</StreamGeometry>
+        <StreamGeometry x:Key="IconBilling">M 5,3 L 19,3 L 19,21 L 16.5,19.2 L 14,21 L 12,19.2 L 10,21 L 7.5,19.2 L 5,21 Z M 8.5,8 L 15.5,8 M 8.5,11.5 L 15.5,11.5 M 8.5,15 L 12.5,15</StreamGeometry>
+        <StreamGeometry x:Key="IconInventory">M 12,3 L 20,7.5 L 20,16.5 L 12,21 L 4,16.5 L 4,7.5 Z M 4,7.5 L 12,12 L 20,7.5 M 12,12 L 12,21</StreamGeometry>
+        <StreamGeometry x:Key="IconInvoices">M 6,3 L 15,3 L 19,7 L 19,21 L 6,21 Z M 15,3 L 15,7 L 19,7 M 9,12 L 16,12 M 9,15.5 L 14,15.5</StreamGeometry>
+        <StreamGeometry x:Key="IconReturns">M 4,10 L 8.5,5.5 M 4,10 L 8.5,14.5 M 4.5,10 L 14.5,10 C 17.8,10 20,12.2 20,15 C 20,17.8 17.8,20 14.5,20 L 9,20</StreamGeometry>
+        <StreamGeometry x:Key="IconRecords">M 4,19 L 20,19 M 6.5,19 L 6.5,12.5 M 12,19 L 12,6.5 M 17.5,19 L 17.5,10</StreamGeometry>
+        <StreamGeometry x:Key="IconSettings">M 4,7 L 20,7 M 4,12 L 20,12 M 4,17 L 20,17 M 9,5 L 9,9 M 15,10 L 15,14 M 11,15 L 11,19</StreamGeometry>
+        <StreamGeometry x:Key="IconSubscription">M 12,3 L 19.5,6.5 L 19.5,12.5 C 19.5,16.8 16.2,19.8 12,21 C 7.8,19.8 4.5,16.8 4.5,12.5 L 4.5,6.5 Z M 9,12 L 11,14 L 15.5,9.5</StreamGeometry>
+        <StreamGeometry x:Key="IconAbout">M 12,3 C 17,3 21,7 21,12 C 21,17 17,21 12,21 C 7,21 3,17 3,12 C 3,7 7,3 12,3 Z M 12,10.5 L 12,16.5 M 12,7.5 L 12,8</StreamGeometry>
+        <StreamGeometry x:Key="IconAddStock">M 12,5 L 12,19 M 5,12 L 19,12</StreamGeometry>
+        <StreamGeometry x:Key="IconClose">M 6,6 L 18,18 M 18,6 L 6,18</StreamGeometry>
+        <FontFamily x:Key="UiBodyFont">pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans, pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans Bengali, Segoe UI, Nirmala UI</FontFamily>
+            <FontFamily x:Key="UiHeadingFont">pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Serif, pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Serif Bengali, Georgia, Nirmala UI</FontFamily>
+            <FontFamily x:Key="UiMonoFont">pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans Mono, Consolas</FontFamily>
+            <SolidColorBrush x:Key="Paper" Color="#F3EADA" />
+        <SolidColorBrush x:Key="PaperRaised" Color="#FBF7EF" />
+        <SolidColorBrush x:Key="PaperRecessed" Color="#E7DCC6" />
+        <SolidColorBrush x:Key="Teal" Color="#172C30" />
+            <SolidColorBrush x:Key="SidebarMutedBrush" Color="#91A7A3" />
+            <SolidColorBrush x:Key="SidebarRuleBrush" Color="#53696B" />
+        <SolidColorBrush x:Key="Ink" Color="#1A1712" />
+        <SolidColorBrush x:Key="Vermilion" Color="#FF4B1F" />
+        <SolidColorBrush x:Key="Success" Color="#00A05A" />
+        <SolidColorBrush x:Key="Danger" Color="#D42A2A" />
+        <SolidColorBrush x:Key="Muted" Color="#746F65" />
+        <SolidColorBrush x:Key="Rule" Color="#D5C9B4" />
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="FontFamily" Value="pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans, pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans Bengali, Segoe UI, Nirmala UI" />
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
+        </Style>
+
+        <Style x:Key="DisplayHeading" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Serif, pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Serif Bengali, Georgia" />
+            <Setter Property="FontSize" Value="29" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Foreground" Value="{StaticResource Teal}" />
+        </Style>
+
+        <Style x:Key="SectionHeading" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="22" />
+                <Setter Property="FontFamily" Value="{StaticResource UiHeadingFont}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{StaticResource Teal}" />
+        </Style>
+
+        <Style x:Key="MetadataText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans Mono, Consolas" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{StaticResource Muted}" />
+        </Style>
+
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,5" />
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontFamily" Value="pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans, pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans Bengali, Segoe UI, Nirmala UI" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="CaretBrush" Value="{StaticResource Teal}" />
+            <Setter Property="SelectionBrush" Value="{StaticResource Teal}" />
+            <Setter Property="Background" Value="{StaticResource PaperRaised}" />
+            <Setter Property="BorderBrush" Value="{StaticResource Rule}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="11,8" />
+            <Setter Property="MinHeight" Value="39" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="TbBorder"
+                                CornerRadius="5"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TbBorder" Property="BorderBrush" Value="#B5A78E" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="TbBorder" Property="BorderBrush" Value="{StaticResource Teal}" />
+                                <Setter TargetName="TbBorder" Property="BorderThickness" Value="1.5" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="TbBorder" Property="Opacity" Value="0.55" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="FontFamily" Value="pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans, pack://application:,,,/ORVA;component/Assets/Fonts/#Noto Sans Bengali, Segoe UI, Nirmala UI" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="Background" Value="{StaticResource PaperRaised}" />
+            <Setter Property="BorderBrush" Value="{StaticResource Rule}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="MinHeight" Value="39" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                                          Focusable="False"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="CbBorder"
+                                                CornerRadius="5"
+                                                Background="{StaticResource PaperRaised}"
+                                                BorderBrush="{StaticResource Rule}"
+                                                BorderThickness="1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="32" />
+                                                </Grid.ColumnDefinitions>
+                                                <Path Grid.Column="1"
+                                                      Data="M 0,0 L 5,5 L 10,0"
+                                                      Stroke="{StaticResource Teal}"
+                                                      StrokeThickness="1.6"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="CbBorder" Property="BorderBrush" Value="#B5A78E" />
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="CbBorder" Property="BorderBrush" Value="{StaticResource Teal}" />
+                                                <Setter TargetName="CbBorder" Property="BorderThickness" Value="1.5" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="ContentSite"
+                                              IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              Margin="11,6,34,6"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Visibility="Hidden"
+                                     Background="{StaticResource PaperRaised}"
+                                     BorderThickness="0"
+                                     Padding="8,4"
+                                     MinHeight="34"
+                                     Margin="2,2,32,2"
+                                     VerticalAlignment="Center"
+                                     Focusable="True"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}" />
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Border MinWidth="{TemplateBinding ActualWidth}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        Margin="0,3,0,0"
+                                        CornerRadius="6"
+                                        Background="{StaticResource PaperRaised}"
+                                        BorderBrush="{StaticResource Teal}"
+                                        BorderThickness="1">
+                                    <ScrollViewer SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEditable" Value="True">
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Padding" Value="11,8" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="ItemBd" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="ItemBd" Property="Background" Value="{StaticResource Teal}" />
+                                <Setter Property="Foreground" Value="{StaticResource PaperRaised}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="FontFamily" Value="{StaticResource UiBodyFont}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="Box"
+                                    Width="18" Height="18"
+                                    CornerRadius="4"
+                                    Background="{StaticResource PaperRaised}"
+                                    BorderBrush="{StaticResource Teal}"
+                                    BorderThickness="1.5"
+                                    Margin="0,0,9,0">
+                                <Path x:Name="CheckMark"
+                                      Data="M 3,8 L 7,12 L 14,4"
+                                      Stroke="{StaticResource PaperRaised}"
+                                      StrokeThickness="2"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      Visibility="Collapsed" />
+                            </Border>
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Box" Property="Background" Value="{StaticResource Teal}" />
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource Vermilion}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+                <Setter Property="fx:OrvaFx.Tactile" Value="True" />
+            <Setter Property="Background" Value="{StaticResource Teal}" />
+            <Setter Property="Foreground" Value="{StaticResource Paper}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="18,10" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontFamily" Value="{StaticResource UiBodyFont}" />
+                <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="MinHeight" Value="42" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#24454A" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.82" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.42" />
+                            </Trigger>
+                                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource Vermilion}" />
+                                    <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="2" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+                <Setter Property="fx:OrvaFx.Tactile" Value="True" />
+                <Setter Property="Background" Value="{StaticResource PaperRaised}" />
+                <Setter Property="Foreground" Value="{StaticResource Teal}" />
+                <Setter Property="BorderBrush" Value="{StaticResource Teal}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="14,9" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="FontFamily" Value="{StaticResource UiBodyFont}" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="SecBorder"
+                                    CornerRadius="5"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="SecBorder" Property="Background" Value="{StaticResource PaperRecessed}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="SecBorder" Property="Background" Value="{StaticResource Rule}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="SecBorder" Property="Opacity" Value="0.5" />
+                                </Trigger>
+                                                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter TargetName="SecBorder" Property="BorderBrush" Value="{StaticResource Vermilion}" />
+                                    <Setter TargetName="SecBorder" Property="BorderThickness" Value="2" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        <Style x:Key="SidebarButton" TargetType="Button">
+                <Setter Property="fx:OrvaFx.Tactile" Value="True" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#F3EADA" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="15,12" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="SideBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="SideBorder" Property="Background" Value="#1E1E1E" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="SideBorder" Property="Background" Value="#2A2A2A" />
+                            </Trigger>
+                                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter TargetName="SideBorder" Property="BorderBrush" Value="{StaticResource Vermilion}" />
+                                    <Setter TargetName="SideBorder" Property="BorderThickness" Value="2" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="{StaticResource PaperRaised}" />
+            <Setter Property="Foreground" Value="{StaticResource Ink}" />
+            <Setter Property="BorderBrush" Value="{StaticResource Rule}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="RowBackground" Value="#FBF7EF" />
+            <Setter Property="AlternatingRowBackground" Value="#F6F0E5" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="HorizontalGridLinesBrush" Value="#E4DAC9" />
+            <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="CanUserResizeRows" Value="False" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="MinRowHeight" Value="43" />
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="SelectionUnit" Value="FullRow" />
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#EDE4D4" />
+            <Setter Property="Foreground" Value="{StaticResource Teal}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="10,11" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="{StaticResource Rule}" />
+        </Style>
+                <SolidColorBrush x:Key="FederalBlue" Color="#1E3FA6" />
+            <Style x:Key="SearchEmptyHint" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource UiBodyFont}" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="Foreground" Value="{StaticResource Muted}" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="Margin" Value="14,12" />
+            </Style>
+        <Style x:Key="HamburgerButtonStyle" TargetType="Button">
+            <Setter Property="fx:OrvaFx.Tactile" Value="True" />
+            <Setter Property="Width" Value="38" />
+            <Setter Property="Height" Value="38" />
+            <Setter Property="Background" Value="{StaticResource Paper}" />
+            <Setter Property="BorderBrush" Value="{StaticResource Rule}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="HamBorder"
+                                CornerRadius="6"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="HamBorder" Property="Background" Value="{StaticResource PaperRecessed}" />
+                                <Setter TargetName="HamBorder" Property="BorderBrush" Value="{StaticResource Teal}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="HamBorder" Property="BorderBrush" Value="{StaticResource Vermilion}" />
+                                <Setter TargetName="HamBorder" Property="BorderThickness" Value="2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="EditorialTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0,0,0,1.5" />
+            <Setter Property="BorderBrush" Value="{StaticResource Rule}" />
+            <Setter Property="Padding" Value="2,8" />
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=RowBackground}" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Style.Triggers>
+                <Trigger Property="AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#F6F0E5" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EFE5D2" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource Teal}" />
+                    <Setter Property="Foreground" Value="{StaticResource PaperRaised}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0,12,0,0" />
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="FontFamily" Value="{StaticResource UiMonoFont}" />
+            <Setter Property="FontSize" Value="11.5" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{StaticResource Muted}" />
+            <Setter Property="Padding" Value="16,10" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabBorder"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="0,0,0,2.5"
+                                Padding="{TemplateBinding Padding}"
+                                Margin="0,0,6,0">
+                            <ContentPresenter ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="{StaticResource PaperRecessed}" />
+                                <Setter Property="Foreground" Value="{StaticResource Teal}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource Vermilion}" />
+                                <Setter TargetName="TabBorder" Property="Background" Value="{StaticResource PaperRaised}" />
+                                <Setter Property="Foreground" Value="{StaticResource Teal}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="9" />
+            <Setter Property="MinWidth" Value="9" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border x:Name="ThumbBar" CornerRadius="4" Background="#C8BBA4" Margin="1,2" />
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ThumbBar" Property="Background" Value="{StaticResource Teal}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="Width" Value="Auto" />
+                    <Setter Property="Height" Value="9" />
+                    <Setter Property="MinHeight" Value="9" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ScrollBar">
+                                <Grid Background="Transparent">
+                                    <Track x:Name="PART_Track" IsDirectionReversed="False">
+                                        <Track.Thumb>
+                                            <Thumb>
+                                                <Thumb.Template>
+                                                    <ControlTemplate TargetType="Thumb">
+                                                        <Border x:Name="HThumbBar" CornerRadius="4" Background="#C8BBA4" Margin="2,1" />
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="HThumbBar" Property="Background" Value="{StaticResource Teal}" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
+                                            </Thumb>
+                                        </Track.Thumb>
+                                    </Track>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="NavIconButton" TargetType="Button">
+            <Setter Property="fx:OrvaFx.Tactile" Value="True" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#E6E6E6" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Padding" Value="12,11" />
+            <Setter Property="FontSize" Value="13.5" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontFamily" Value="{StaticResource UiBodyFont}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="NavBd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Path x:Name="NavIcon"
+                                      Data="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
+                                      Width="16" Height="16" Stretch="Uniform"
+                                      Stroke="#9A9A9A" StrokeThickness="1.5"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                      StrokeLineJoin="Round"
+                                      Margin="0,0,12,0"
+                                      VerticalAlignment="Center" />
+                                <ContentPresenter VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="NavBd" Property="Background" Value="#1C1C1C" />
+                                <Setter TargetName="NavIcon" Property="Stroke" Value="#FAFAFA" />
+                                <Setter Property="Foreground" Value="#FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="NavBd" Property="Background" Value="#262626" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="NavBd" Property="BorderBrush" Value="{StaticResource Vermilion}" />
+                                <Setter TargetName="NavBd" Property="BorderThickness" Value="2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Application.Resources>
+</Application>

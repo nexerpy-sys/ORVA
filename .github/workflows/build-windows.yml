@@ -1,0 +1,28 @@
+name: Build & Test ORVA (Windows net48)
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: msbuild ORVA.sln /t:Restore /p:Configuration=Release
+
+      - name: Build ORVA Solution (Release)
+        run: msbuild ORVA.sln /p:Configuration=Release /m
+
+      - name: Run xUnit Test Suite
+        run: dotnet test tests/Orva.Billing.Tests/Orva.Billing.Tests.csproj -c Release --no-build --verbosity normal

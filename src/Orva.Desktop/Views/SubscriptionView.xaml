@@ -1,0 +1,139 @@
+<UserControl x:Class="Orva.Views.SubscriptionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fx="clr-namespace:Orva.Controls"
+             Background="Transparent"
+             FontFamily="{StaticResource UiBodyFont}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="0,0,6,18">
+
+            <!-- EDITORIAL ARCHIVAL MASTHEAD -->
+            <Grid Margin="0,0,0,14">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" LastChildFill="True" Margin="0,0,0,6">
+                    <fx:RegistrationMark DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0,0,0" />
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="07" FontFamily="{StaticResource UiMonoFont}" FontSize="11" FontWeight="Bold"
+                                   Foreground="{StaticResource FederalBlue}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <Border Width="1" Height="12" Background="{StaticResource Rule}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <TextBlock Text="{DynamicResource SubCurrentStatus}" Style="{StaticResource MetadataText}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </DockPanel>
+                <Grid Grid.Row="1">
+                    <Border Height="1.5" Background="{StaticResource Ink}" Opacity="0.85" />
+                    <Border Height="2" Width="64" HorizontalAlignment="Left" Background="{StaticResource FederalBlue}" />
+                </Grid>
+            </Grid>
+
+            <!-- CURRENT PLAN STATUS (SHARP ARCHITECTURAL PLATE WITH COBALT LEFT RULE) -->
+            <Border Background="{StaticResource PaperRaised}" BorderBrush="{StaticResource Rule}" BorderThickness="1" fx:OrvaFx.Spotlight="True" Margin="0,0,0,14">
+                <Grid>
+                    <Border Width="4" HorizontalAlignment="Left" Background="{StaticResource FederalBlue}" />
+                    <StackPanel Margin="20,16,18,16">
+                        <TextBlock Text="{DynamicResource SubCurrentStatus}" Style="{StaticResource MetadataText}" />
+                        <TextBlock x:Name="PlanTitleText" Text="—" Style="{StaticResource DisplayHeading}" FontSize="22" Margin="0,4,0,4" />
+                        <TextBlock x:Name="PlanDetailText" FontSize="13" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                        <Button x:Name="RefreshSubButton" Content="{DynamicResource SubRefreshButton}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" MinWidth="180" Click="Refresh_Click" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- PLAN SELECTION, UPI QR & PAYMENT NOTIFICATION -->
+            <Border Background="{StaticResource PaperRaised}" BorderBrush="{StaticResource Rule}" BorderThickness="1" fx:OrvaFx.Spotlight="True" Padding="18" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource SubChoosePlan}" Style="{StaticResource SectionHeading}" Margin="0,0,0,12" />
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="{DynamicResource SubPlanMonthly}" Tag="Monthly" Style="{StaticResource SecondaryButton}" MinHeight="56" Click="SelectPlan_Click" />
+                        <Button Grid.Column="2" Content="{DynamicResource SubPlanQuarterly}" Tag="Quarterly" Style="{StaticResource SecondaryButton}" MinHeight="56" Click="SelectPlan_Click" />
+                        <Button Grid.Column="4" Content="{DynamicResource SubPlanAnnual}" Tag="Annual" Style="{StaticResource SecondaryButton}" MinHeight="56" Click="SelectPlan_Click" />
+                        <Button Grid.Column="6" Content="{DynamicResource SubPlanOneTime}" Tag="One-Time" Style="{StaticResource SecondaryButton}" MinHeight="56" Click="SelectPlan_Click" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                            <TextBlock x:Name="SelectedPlanLabel" Text="Monthly" FontWeight="SemiBold" Foreground="{StaticResource Teal}" Margin="0,0,0,8" />
+                            <TextBlock x:Name="SupportContactText" FontSize="12.5" Foreground="{StaticResource Ink}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                            <WrapPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Button Content="{DynamicResource SubCopyPhone}" Style="{StaticResource SecondaryButton}" Padding="10,5" FontSize="11.5" Margin="0,0,8,4" Click="CopySupportPhone_Click" />
+                                <Button Content="{DynamicResource SubCopyUpi}" Style="{StaticResource SecondaryButton}" Padding="10,5" FontSize="11.5" Margin="0,0,8,4" Click="CopyUpiId_Click" />
+                                <TextBlock x:Name="CopyFeedbackText" VerticalAlignment="Center" FontSize="11.5" Foreground="{StaticResource Success}" />
+                            </WrapPanel>
+
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{DynamicResource SubAmountPaid}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox x:Name="AmountBox" TextChanged="AmountBox_TextChanged" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="{DynamicResource SubUtrOptional}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox x:Name="UtrBox" />
+                                </StackPanel>
+                            </Grid>
+
+                            <Button Content="{DynamicResource SubNotifyWhatsapp}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" MinWidth="240" Click="NotifyWhatsapp_Click" />
+                        </StackPanel>
+
+                        <!-- OFFLINE SCANNABLE UPI QR PLATE -->
+                        <Border x:Name="UpiQrPanel" Grid.Column="1" Background="White" BorderBrush="{StaticResource Ink}" BorderThickness="1" Padding="10" VerticalAlignment="Top" Visibility="Collapsed">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Border Height="2" Background="{StaticResource Vermilion}" Margin="0,0,0,8" />
+                                <Image x:Name="UpiQrImage" Width="156" Height="156" Stretch="Uniform" />
+                                <TextBlock x:Name="UpiQrCaption" FontFamily="{StaticResource UiMonoFont}" FontSize="11" Foreground="{StaticResource Ink}" HorizontalAlignment="Center" Margin="0,6,0,0" TextAlignment="Center" MaxWidth="164" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- LICENCE ACTIVATION / REGISTRY CONFIGURATION -->
+            <Border Background="{StaticResource PaperRaised}" BorderBrush="{StaticResource Rule}" BorderThickness="1" fx:OrvaFx.Spotlight="True" Padding="18">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource SubActivationSection}" Style="{StaticResource SectionHeading}" Margin="0,0,0,10" />
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="12" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{DynamicResource SubUsername}" Style="{StaticResource FieldLabel}" />
+                            <TextBox x:Name="UsernameBox" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="{DynamicResource SubActivationCode}" Style="{StaticResource FieldLabel}" />
+                            <TextBox x:Name="ActivationCodeBox" />
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="{DynamicResource SubRegistryUrl}" Style="{StaticResource FieldLabel}" />
+                    <TextBox x:Name="RegistryUrlBox" Margin="0,0,0,12" />
+                    <DockPanel LastChildFill="True">
+                        <Button DockPanel.Dock="Right" Content="{DynamicResource SubSaveActivation}" Style="{StaticResource PrimaryButton}" MinWidth="170" Click="SaveCredentials_Click" />
+                        <TextBlock x:Name="SaveStatusText" VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap" Margin="0,0,12,0" />
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

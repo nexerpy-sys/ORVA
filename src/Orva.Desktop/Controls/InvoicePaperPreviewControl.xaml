@@ -1,0 +1,453 @@
+<UserControl x:Class="Orva.Controls.InvoicePaperPreviewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Orva.Controls"
+             Background="Transparent"
+             FontFamily="{StaticResource UiBodyFont}">
+
+    <!--
+        On-screen paper preview only. Every monetary value, quantity, batch number and
+        expiry shown here is copied from InvoicePreviewResult / BatchAllocationPreview.
+        Nothing is calculated in this control. Switching paper format changes layout only.
+    -->
+
+    <UserControl.Resources>
+        <local:PaiseToRupeesConverter x:Key="PaiseToRupees" />
+        <local:QuantityMilliToTextConverter x:Key="QuantityMilli" />
+        <local:ExpiryYyyyMmToTextConverter x:Key="Expiry" />
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+        <local:StringToVisibilityConverter x:Key="StringToVisibility" />
+
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontFamily" Value="{StaticResource UiBodyFont}" />
+            <Setter Property="Foreground" Value="#1A1712" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="PaperSmall" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="{Binding SmallFontSize, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        </Style>
+
+        <Style x:Key="PaperTiny" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="{Binding TinyFontSize, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="Foreground" Value="#55504A" />
+        </Style>
+
+        <Style x:Key="PaperDash" TargetType="Line">
+            <Setter Property="X1" Value="0" />
+            <Setter Property="Y1" Value="0" />
+            <Setter Property="X2" Value="1" />
+            <Setter Property="Y2" Value="0" />
+            <Setter Property="Stretch" Value="Fill" />
+            <Setter Property="Stroke" Value="#1A1712" />
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="Opacity" Value="0.4" />
+            <Setter Property="Margin" Value="0,6" />
+        </Style>
+
+        <!-- One FEFO allocation on a thermal receipt. Staff never edit these. -->
+        <DataTemplate x:Key="ThermalAllocationTemplate">
+            <StackPanel Margin="0,1,0,0">
+                <WrapPanel>
+                    <TextBlock Text="{DynamicResource BillBatchWord}" Style="{StaticResource PaperTiny}" />
+                    <TextBlock Text=" " Style="{StaticResource PaperTiny}" />
+                    <TextBlock Text="{Binding BatchNumber}" Style="{StaticResource PaperTiny}" MaxWidth="110" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="   " Style="{StaticResource PaperTiny}" />
+                    <TextBlock Text="{DynamicResource BillExpiryWord}" Style="{StaticResource PaperTiny}" />
+                    <TextBlock Text=" " Style="{StaticResource PaperTiny}" />
+                    <TextBlock Text="{Binding ExpiryYyyyMm, Converter={StaticResource Expiry}}" Style="{StaticResource PaperTiny}" />
+                </WrapPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding LineTotalPaise, Converter={StaticResource PaiseToRupees}}" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding QuantityMilli, Converter={StaticResource QuantityMilli}}" Style="{StaticResource PaperSmall}" />
+                        <TextBlock Text=" " Style="{StaticResource PaperSmall}" />
+                        <TextBlock Text="{Binding DataContext.StockUnitName, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Style="{StaticResource PaperSmall}" />
+                        <TextBlock Text=" × " Style="{StaticResource PaperSmall}" />
+                        <TextBlock Text="{Binding UnitPricePaise, Converter={StaticResource PaiseToRupees}, ConverterParameter=symbol}" Style="{StaticResource PaperSmall}" />
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ThermalLineTemplate">
+            <StackPanel Margin="0,5,0,0">
+                <TextBlock Text="{Binding MedicineName}" FontWeight="SemiBold" />
+                <ItemsControl ItemsSource="{Binding BatchAllocations}" ItemTemplate="{StaticResource ThermalAllocationTemplate}" />
+                <DockPanel Margin="0,1,0,0" LastChildFill="True">
+                    <DockPanel.Style>
+                        <Style TargetType="DockPanel">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BatchAllocations.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding BatchAllocations.Count}" Value="1">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DockPanel.Style>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding LineTotalPaise, Converter={StaticResource PaiseToRupees}}" FontWeight="SemiBold" />
+                    <TextBlock Text="{DynamicResource BillAmountWord}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PageAllocationTemplate">
+            <WrapPanel Margin="0,1,0,0">
+                <TextBlock Text="{DynamicResource BillBatchWord}" Style="{StaticResource PaperSmall}" />
+                <TextBlock Text=" " Style="{StaticResource PaperSmall}" />
+                <TextBlock Text="{Binding BatchNumber}" Style="{StaticResource PaperSmall}" MaxWidth="120" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="  ·  " Style="{StaticResource PaperSmall}" />
+                <TextBlock Text="{DynamicResource BillExpiryWord}" Style="{StaticResource PaperSmall}" />
+                <TextBlock Text=" " Style="{StaticResource PaperSmall}" />
+                <TextBlock Text="{Binding ExpiryYyyyMm, Converter={StaticResource Expiry}}" Style="{StaticResource PaperSmall}" />
+                <TextBlock Text="  ·  " Style="{StaticResource PaperSmall}" />
+                <TextBlock Text="{Binding QuantityMilli, Converter={StaticResource QuantityMilli}}" Style="{StaticResource PaperSmall}" />
+                <TextBlock Text=" " Style="{StaticResource PaperSmall}" />
+                <TextBlock Text="{Binding DataContext.StockUnitName, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Style="{StaticResource PaperSmall}" />
+                <TextBlock Text=" × " Style="{StaticResource PaperSmall}" />
+                <TextBlock Text="{Binding UnitPricePaise, Converter={StaticResource PaiseToRupees}, ConverterParameter=symbol}" Style="{StaticResource PaperSmall}" />
+            </WrapPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PageLineTemplate">
+            <Border BorderBrush="#E4DAC9" BorderThickness="0,0,0,1" Padding="0,6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="78" />
+                        <ColumnDefinition Width="92" />
+                        <ColumnDefinition Width="Auto" MinWidth="105" SharedSizeGroup="ColTotal" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="{Binding MedicineName}" FontWeight="SemiBold" />
+                        <ItemsControl ItemsSource="{Binding BatchAllocations}" ItemTemplate="{StaticResource PageAllocationTemplate}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding QuantityMilli, Converter={StaticResource QuantityMilli}}" HorizontalAlignment="Right" />
+                        <TextBlock Text="{Binding StockUnitName}" Style="{StaticResource PaperSmall}" HorizontalAlignment="Right" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="Text" Value="—" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding BatchAllocations.Count}" Value="1">
+                                        <Setter Property="Text" Value="{Binding BatchAllocations[0].UnitPricePaise, Converter={StaticResource PaiseToRupees}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Grid.Column="3" Text="{Binding LineTotalPaise, Converter={StaticResource PaiseToRupees}}" HorizontalAlignment="Right" FontWeight="SemiBold" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TenderLineTemplate">
+            <DockPanel Margin="0,1" LastChildFill="True" Visibility="{Binding HasAmount, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock DockPanel.Dock="Right" Text="{Binding AmountPaise, Converter={StaticResource PaiseToRupees}}" />
+                <TextBlock Text="{Binding MethodName}" Style="{StaticResource PaperSmall}" />
+            </DockPanel>
+        </DataTemplate>
+
+        <!-- Shared totals block. DataContext is InvoicePreviewResult; values are display-only. -->
+        <DataTemplate x:Key="TotalsTemplate">
+            <StackPanel>
+                <DockPanel Margin="0,1" LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding SubtotalPaise, Converter={StaticResource PaiseToRupees}}" />
+                    <TextBlock Text="{DynamicResource BillSubtotal}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+
+                <DockPanel Margin="0,1" LastChildFill="True"
+                           Visibility="{Binding ShowTaxableValue, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding TaxableValuePaise, Converter={StaticResource PaiseToRupees}}" />
+                    <TextBlock Text="{DynamicResource BillTaxableValue}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+
+                <DockPanel Margin="0,1" LastChildFill="True"
+                           Visibility="{Binding ShowCgstSgst, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding CgstPaise, Converter={StaticResource PaiseToRupees}}" />
+                    <TextBlock Text="{DynamicResource BillCgst}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+
+                <DockPanel Margin="0,1" LastChildFill="True"
+                           Visibility="{Binding ShowCgstSgst, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding SgstPaise, Converter={StaticResource PaiseToRupees}}" />
+                    <TextBlock Text="{DynamicResource BillSgst}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+
+                <DockPanel Margin="0,1" LastChildFill="True"
+                           Visibility="{Binding ShowIgst, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding IgstPaise, Converter={StaticResource PaiseToRupees}}" />
+                    <TextBlock Text="{DynamicResource BillIgst}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+
+                <DockPanel Margin="0,1" LastChildFill="True"
+                           Visibility="{Binding ShowRoundOff, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding RoundOffPaise, Converter={StaticResource PaiseToRupees}}" />
+                    <TextBlock Text="{DynamicResource BillRoundOff}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+
+                <Line Style="{StaticResource PaperDash}" />
+
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding GrandTotalPaise, Converter={StaticResource PaiseToRupees}, ConverterParameter=symbol}" FontWeight="Bold" />
+                    <TextBlock Text="{DynamicResource BillGrandTotal}" FontWeight="Bold" />
+                </DockPanel>
+
+                <Line Style="{StaticResource PaperDash}" />
+
+                <DockPanel Margin="0,1" LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding TenderTotalPaise, Converter={StaticResource PaiseToRupees}}" />
+                    <TextBlock Text="{DynamicResource BillTendered}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+
+                <DockPanel Margin="0,1" LastChildFill="True"
+                           Visibility="{Binding ShowRemaining, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding AmountRemainingPaise, Converter={StaticResource PaiseToRupees}}" />
+                    <TextBlock Text="{DynamicResource BillRemaining}" Style="{StaticResource PaperSmall}" />
+                </DockPanel>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Border x:Name="PaperBorder"
+                Background="#FFFFFF"
+                BorderBrush="#D5C9B4"
+                BorderThickness="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Visibility="{Binding HasPreview, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+            <StackPanel>
+                <!-- Signature scalloped vermilion ticket edge: repeated semicircular cutouts
+                     revealing the vermilion layer behind the paper edge. -->
+                <Border Height="10" Background="#FF4B1F" ClipToBounds="True">
+                    <Border.OpacityMask>
+                        <DrawingBrush TileMode="Tile" Viewport="0,0,14,10" ViewportUnits="Absolute">
+                            <DrawingBrush.Drawing>
+                                <GeometryDrawing Brush="Black">
+                                    <GeometryDrawing.Geometry>
+                                        <PathGeometry Figures="M 0,0 L 14,0 L 14,10 A 5,5 0 0 0 4,10 L 0,10 Z" />
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Border.OpacityMask>
+                    <Rectangle Height="10" Fill="#FF4B1F" />
+                </Border>
+
+                <Border x:Name="PaperContent">
+                    <Grid>
+                        <!-- ================= THERMAL (58 mm / 80 mm) ================= -->
+                        <StackPanel x:Name="ThermalPanel"
+                                    Visibility="{Binding IsThermal, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+
+                            <StackPanel Visibility="{Binding ShowShop, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock Text="{Binding Shop.ShopName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           FontWeight="Bold" TextAlignment="Center" />
+                                <TextBlock Text="{Binding Shop.Address, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Style="{StaticResource PaperSmall}" TextAlignment="Center"
+                                           Visibility="{Binding Shop.Address, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                            Visibility="{Binding Shop.Phone, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}">
+                                    <TextBlock Text="{DynamicResource BillCustomerPhone}" Style="{StaticResource PaperSmall}" />
+                                    <TextBlock Text=": " Style="{StaticResource PaperSmall}" />
+                                    <TextBlock Text="{Binding Shop.Phone, RelativeSource={RelativeSource AncestorType=UserControl}}" Style="{StaticResource PaperSmall}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                            Visibility="{Binding Shop.Gstin, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}">
+                                    <TextBlock Text="{DynamicResource BillCustomerGstin}" Style="{StaticResource PaperSmall}" />
+                                    <TextBlock Text=": " Style="{StaticResource PaperSmall}" />
+                                    <TextBlock Text="{Binding Shop.Gstin, RelativeSource={RelativeSource AncestorType=UserControl}}" Style="{StaticResource PaperSmall}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                            Visibility="{Binding Shop.DrugLicenceNumber, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}">
+                                    <TextBlock Text="{DynamicResource BillDrugLicenceShort}" Style="{StaticResource PaperSmall}" />
+                                    <TextBlock Text=": " Style="{StaticResource PaperSmall}" />
+                                    <TextBlock Text="{Binding Shop.DrugLicenceNumber, RelativeSource={RelativeSource AncestorType=UserControl}}" Style="{StaticResource PaperSmall}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <TextBlock Text="ORVA" FontFamily="{StaticResource UiHeadingFont}" FontSize="18" TextAlignment="Center"
+                                       Visibility="{Binding ShowShop, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}, ConverterParameter=Invert}" />
+
+                            <Line Style="{StaticResource PaperDash}" />
+
+                            <TextBlock Text="{DynamicResource BillInvoiceWord}" FontWeight="Bold" TextAlignment="Center" />
+                            <TextBlock Text="{Binding InvoiceNumberText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                       Style="{StaticResource PaperSmall}" TextAlignment="Center" Margin="0,2,0,0" />
+                            <TextBlock Text="{Binding InvoiceDateText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                       Style="{StaticResource PaperSmall}" TextAlignment="Center" />
+
+                            <StackPanel Margin="0,6,0,0"
+                                        Visibility="{Binding ShowCustomer, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock Text="{DynamicResource BillBillTo}" Style="{StaticResource PaperTiny}" />
+                                <TextBlock Text="{Binding CustomerName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Style="{StaticResource PaperSmall}"
+                                           Visibility="{Binding CustomerName, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                                <TextBlock Text="{Binding CustomerPhone, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Style="{StaticResource PaperSmall}"
+                                           Visibility="{Binding CustomerPhone, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                                <TextBlock Text="{Binding CustomerAddress, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Style="{StaticResource PaperSmall}"
+                                           Visibility="{Binding CustomerAddress, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                                <TextBlock Text="{Binding CustomerGstin, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Style="{StaticResource PaperSmall}"
+                                           Visibility="{Binding CustomerGstin, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                            </StackPanel>
+
+                            <Line Style="{StaticResource PaperDash}" />
+
+                            <ItemsControl ItemsSource="{Binding Preview.Lines, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                          ItemTemplate="{StaticResource ThermalLineTemplate}" />
+
+                            <Line Style="{StaticResource PaperDash}" />
+
+                            <ContentControl Content="{Binding Preview, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            ContentTemplate="{StaticResource TotalsTemplate}" />
+
+                            <StackPanel Margin="0,6,0,0"
+                                        Visibility="{Binding ShowPayments, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock Text="{DynamicResource BillPaymentsWord}" Style="{StaticResource PaperTiny}" />
+                                <ItemsControl ItemsSource="{Binding TenderLines, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              ItemTemplate="{StaticResource TenderLineTemplate}" />
+                            </StackPanel>
+
+                            <Line Style="{StaticResource PaperDash}" />
+
+                            <TextBlock Text="{DynamicResource BillThankYou}" Style="{StaticResource PaperSmall}" TextAlignment="Center" />
+                            <TextBlock Text="{DynamicResource BillSoftwareLine}" FontFamily="{StaticResource UiMonoFont}"
+                                       Style="{StaticResource PaperTiny}" TextAlignment="Center" Margin="0,4,0,0" />
+                        </StackPanel>
+
+                        <!-- ================= PAGE (A4 / A5) ================= -->
+                        <StackPanel x:Name="PagePanel" Grid.IsSharedSizeScope="True"
+                                    Visibility="{Binding IsPage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding Shop.ShopName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                               FontFamily="{StaticResource UiHeadingFont}" FontSize="20" Foreground="#172C30"
+                                               Visibility="{Binding ShowShop, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}" />
+                                    <TextBlock Text="ORVA" FontFamily="{StaticResource UiHeadingFont}" FontSize="20" Foreground="#172C30"
+                                               Visibility="{Binding ShowShop, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}, ConverterParameter=Invert}" />
+                                    <TextBlock Text="{Binding Shop.Address, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                               Style="{StaticResource PaperSmall}" MaxWidth="330" HorizontalAlignment="Left" Margin="0,3,0,0"
+                                               Visibility="{Binding Shop.Address, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
+                                                Visibility="{Binding Shop.Phone, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}">
+                                        <TextBlock Text="{DynamicResource BillCustomerPhone}" Style="{StaticResource PaperSmall}" />
+                                        <TextBlock Text=": " Style="{StaticResource PaperSmall}" />
+                                        <TextBlock Text="{Binding Shop.Phone, RelativeSource={RelativeSource AncestorType=UserControl}}" Style="{StaticResource PaperSmall}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
+                                                Visibility="{Binding Shop.Gstin, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}">
+                                        <TextBlock Text="{DynamicResource BillCustomerGstin}" Style="{StaticResource PaperSmall}" />
+                                        <TextBlock Text=": " Style="{StaticResource PaperSmall}" />
+                                        <TextBlock Text="{Binding Shop.Gstin, RelativeSource={RelativeSource AncestorType=UserControl}}" Style="{StaticResource PaperSmall}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0"
+                                                Visibility="{Binding Shop.DrugLicenceNumber, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}">
+                                        <TextBlock Text="{DynamicResource BillDrugLicenceShort}" Style="{StaticResource PaperSmall}" />
+                                        <TextBlock Text=": " Style="{StaticResource PaperSmall}" />
+                                        <TextBlock Text="{Binding Shop.DrugLicenceNumber, RelativeSource={RelativeSource AncestorType=UserControl}}" Style="{StaticResource PaperSmall}" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" HorizontalAlignment="Right">
+                                    <TextBlock Text="{DynamicResource BillInvoiceWord}" FontFamily="{StaticResource UiMonoFont}" FontSize="16"
+                                               Foreground="#172C30" HorizontalAlignment="Right" />
+                                    <TextBlock Text="{Binding InvoiceNumberText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                               Style="{StaticResource PaperSmall}" HorizontalAlignment="Right" MaxWidth="240" TextAlignment="Right" Margin="0,4,0,0" />
+                                    <TextBlock Text="{Binding InvoiceDateText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                               Style="{StaticResource PaperSmall}" HorizontalAlignment="Right" MaxWidth="240" TextAlignment="Right" />
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Height="2" Background="#FF4B1F" Margin="0,12,0,12" />
+
+                            <StackPanel Margin="0,0,0,12"
+                                        Visibility="{Binding ShowCustomer, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock Text="{DynamicResource BillBillTo}" Style="{StaticResource PaperTiny}" />
+                                <TextBlock Text="{Binding CustomerName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           FontWeight="SemiBold"
+                                           Visibility="{Binding CustomerName, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                                <TextBlock Text="{Binding CustomerPhone, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Style="{StaticResource PaperSmall}"
+                                           Visibility="{Binding CustomerPhone, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                                <TextBlock Text="{Binding CustomerAddress, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Style="{StaticResource PaperSmall}" MaxWidth="380" HorizontalAlignment="Left"
+                                           Visibility="{Binding CustomerAddress, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                                <TextBlock Text="{Binding CustomerGstin, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Style="{StaticResource PaperSmall}"
+                                           Visibility="{Binding CustomerGstin, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibility}}" />
+                            </StackPanel>
+
+                            <Grid Margin="0,0,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="78" />
+                                    <ColumnDefinition Width="92" />
+                                    <ColumnDefinition Width="Auto" MinWidth="105" SharedSizeGroup="ColTotal" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{DynamicResource BillItemWord}" Style="{StaticResource PaperTiny}" />
+                                <TextBlock Grid.Column="1" Text="{DynamicResource BillQtyWord}" Style="{StaticResource PaperTiny}" HorizontalAlignment="Right" />
+                                <TextBlock Grid.Column="2" Text="{DynamicResource BillRateWord}" Style="{StaticResource PaperTiny}" HorizontalAlignment="Right" />
+                                <TextBlock Grid.Column="3" Text="{DynamicResource BillAmountWord}" Style="{StaticResource PaperTiny}" HorizontalAlignment="Right" />
+                            </Grid>
+                            <Border Height="1" Background="#746F65" />
+
+                            <ItemsControl ItemsSource="{Binding Preview.Lines, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                          ItemTemplate="{StaticResource PageLineTemplate}" />
+
+                            <ContentControl Content="{Binding Preview, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            ContentTemplate="{StaticResource TotalsTemplate}"
+                                            HorizontalAlignment="Right" Width="280" Margin="0,12,0,0" />
+
+                            <StackPanel HorizontalAlignment="Right" Width="280" Margin="0,8,0,0"
+                                        Visibility="{Binding ShowPayments, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock Text="{DynamicResource BillPaymentsWord}" Style="{StaticResource PaperTiny}" />
+                                <ItemsControl ItemsSource="{Binding TenderLines, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              ItemTemplate="{StaticResource TenderLineTemplate}" />
+                            </StackPanel>
+
+                            <Grid Margin="0,28,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{DynamicResource BillThankYou}" Style="{StaticResource PaperSmall}" VerticalAlignment="Bottom" />
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right" MinWidth="170">
+                                    <Border Height="1" Background="#746F65" Margin="0,0,0,4" />
+                                    <TextBlock Text="{DynamicResource BillAuthorisedSignatory}" Style="{StaticResource PaperSmall}" HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="{DynamicResource BillSoftwareLine}" FontFamily="{StaticResource UiMonoFont}"
+                                       Style="{StaticResource PaperTiny}" HorizontalAlignment="Center" Margin="0,18,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <TextBlock Text="{DynamicResource BillPreviewEmpty}"
+                   Foreground="#746F65"
+                   FontSize="13"
+                   TextAlignment="Center"
+                   MaxWidth="320"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Visibility="{Binding HasPreview, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibility}, ConverterParameter=Invert}" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,318 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:sys="clr-namespace:System;assembly=mscorlib">
+<sys:String x:Key="LanguageMarker" xmlns:sys="clr-namespace:System;assembly=mscorlib">en</sys:String>
+<sys:String x:Key="NavBilling" xmlns:sys="clr-namespace:System;assembly=mscorlib">＋   New Billing</sys:String>
+<sys:String x:Key="NavInventory" xmlns:sys="clr-namespace:System;assembly=mscorlib">▦   Inventory &amp; Stock</sys:String>
+<sys:String x:Key="NavInvoices" xmlns:sys="clr-namespace:System;assembly=mscorlib">▤   Invoices</sys:String>
+<sys:String x:Key="NavReturns" xmlns:sys="clr-namespace:System;assembly=mscorlib">↩   Sales Returns</sys:String>
+<sys:String x:Key="NavRecords" xmlns:sys="clr-namespace:System;assembly=mscorlib">▥   Records &amp; Tax</sys:String>
+<sys:String x:Key="NavSettings" xmlns:sys="clr-namespace:System;assembly=mscorlib">⚙   Settings</sys:String>
+<sys:String x:Key="NavSubscription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Subscription &amp; Support</sys:String>
+<sys:String x:Key="DisplayLanguage" xmlns:sys="clr-namespace:System;assembly=mscorlib">DISPLAY LANGUAGE</sys:String>
+<sys:String x:Key="PageInventoryTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Inventory &amp; Stock</sys:String>
+<sys:String x:Key="PageInventoryEyebrow" xmlns:sys="clr-namespace:System;assembly=mscorlib">ORVA  /  MEDICINE RECORDS</sys:String>
+<sys:String x:Key="FindMedicineBatch" xmlns:sys="clr-namespace:System;assembly=mscorlib">Find a medicine or batch</sys:String>
+<sys:String x:Key="AddStock" xmlns:sys="clr-namespace:System;assembly=mscorlib">＋  Add Stock</sys:String>
+<sys:String x:Key="RefreshStockFile" xmlns:sys="clr-namespace:System;assembly=mscorlib">Refresh stock file</sys:String>
+<sys:String x:Key="OpenShopFolder" xmlns:sys="clr-namespace:System;assembly=mscorlib">Open shop folder</sys:String>
+<sys:String x:Key="Medicines" xmlns:sys="clr-namespace:System;assembly=mscorlib">MEDICINES</sys:String>
+<sys:String x:Key="Batches" xmlns:sys="clr-namespace:System;assembly=mscorlib">BATCHES</sys:String>
+<sys:String x:Key="PortableStockFile" xmlns:sys="clr-namespace:System;assembly=mscorlib">PORTABLE STOCK FILE</sys:String>
+<sys:String x:Key="SnapshotUpdated" xmlns:sys="clr-namespace:System;assembly=mscorlib">Updated</sys:String>
+<sys:String x:Key="SnapshotNotCreated" xmlns:sys="clr-namespace:System;assembly=mscorlib">Not created yet</sys:String>
+<sys:String x:Key="AddStockTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Add stock</sys:String>
+<sys:String x:Key="MedicineDetails" xmlns:sys="clr-namespace:System;assembly=mscorlib">MEDICINE DETAILS</sys:String>
+<sys:String x:Key="MedicineName" xmlns:sys="clr-namespace:System;assembly=mscorlib">Medicine name *</sys:String>
+<sys:String x:Key="StockUnit" xmlns:sys="clr-namespace:System;assembly=mscorlib">Stock unit *</sys:String>
+<sys:String x:Key="BatchNumber" xmlns:sys="clr-namespace:System;assembly=mscorlib">Batch number *</sys:String>
+<sys:String x:Key="ExpiryDate" xmlns:sys="clr-namespace:System;assembly=mscorlib">Expiry (month / year) *</sys:String>
+<sys:String x:Key="QuantityReceived" xmlns:sys="clr-namespace:System;assembly=mscorlib">Quantity received *</sys:String>
+<sys:String x:Key="PurchasePrice" xmlns:sys="clr-namespace:System;assembly=mscorlib">Purchase price per unit (₹) *</sys:String>
+<sys:String x:Key="MrpPrice" xmlns:sys="clr-namespace:System;assembly=mscorlib">MRP per unit (₹) *</sys:String>
+<sys:String x:Key="PurchaseDetailsOptional" xmlns:sys="clr-namespace:System;assembly=mscorlib">Purchase details (optional)</sys:String>
+<sys:String x:Key="SupplierBoughtFrom" xmlns:sys="clr-namespace:System;assembly=mscorlib">Supplier / bought from</sys:String>
+<sys:String x:Key="SupplierLicence" xmlns:sys="clr-namespace:System;assembly=mscorlib">Supplier licence number (if available)</sys:String>
+<sys:String x:Key="PurchaseDocument" xmlns:sys="clr-namespace:System;assembly=mscorlib">Purchase document</sys:String>
+<sys:String x:Key="DocumentReference" xmlns:sys="clr-namespace:System;assembly=mscorlib">Document reference</sys:String>
+<sys:String x:Key="Cancel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Cancel</sys:String>
+<sys:String x:Key="SaveStock" xmlns:sys="clr-namespace:System;assembly=mscorlib">SAVE STOCK</sys:String>
+
+<!-- ===== ORVA New Billing workspace (Qwen UI assignment) ===== -->
+<sys:String x:Key="PageBillingTitle">New Billing</sys:String>
+<sys:String x:Key="PageBillingEyebrow">ORVA  /  POINT OF SALE</sys:String>
+<sys:String x:Key="BillSearchLabel">Find a medicine</sys:String>
+<sys:String x:Key="BillSearchHint">Type a name or scan the barcode, then press Enter</sys:String>
+<sys:String x:Key="BillSearchBusy">Searching…</sys:String>
+<sys:String x:Key="BillSearchResultsLabel">MATCHING MEDICINES</sys:String>
+<sys:String x:Key="BillAdd">Add</sys:String>
+<sys:String x:Key="BillLowStock">Low stock</sys:String>
+<sys:String x:Key="BillCannotSell">No sellable stock right now.</sys:String>
+<sys:String x:Key="BillCartHeading">Medicines in this bill</sys:String>
+<sys:String x:Key="BillCartEmpty">Search above to add the first medicine.</sys:String>
+<sys:String x:Key="BillCartCountOne">1 item</sys:String>
+<sys:String x:Key="BillCartCountFormat">{0} items</sys:String>
+<sys:String x:Key="BillColumnMedicine">MEDICINE</sys:String>
+<sys:String x:Key="BillColumnQuantity">QTY</sys:String>
+<sys:String x:Key="BillColumnAmount">AMOUNT</sys:String>
+<sys:String x:Key="BillRemove">Remove</sys:String>
+<sys:String x:Key="BillClear">Clear bill</sys:String>
+<sys:String x:Key="BillClearConfirmTitle">Clear this bill?</sys:String>
+<sys:String x:Key="BillClearConfirmMessage">All medicines and payments entered for this bill will be removed. Saved invoices are not affected.</sys:String>
+<sys:String x:Key="BillAllocationNoteFormat">From {0} batches</sys:String>
+<sys:String x:Key="BillSummaryHeading">Bill summary</sys:String>
+<sys:String x:Key="BillUpdatingTotals">Updating totals…</sys:String>
+<sys:String x:Key="BillSubtotal">Subtotal</sys:String>
+<sys:String x:Key="BillTaxableValue">Taxable value</sys:String>
+<sys:String x:Key="BillCgst">CGST</sys:String>
+<sys:String x:Key="BillSgst">SGST</sys:String>
+<sys:String x:Key="BillIgst">IGST</sys:String>
+<sys:String x:Key="BillRoundOff">Round off</sys:String>
+<sys:String x:Key="BillGrandTotal">Grand total</sys:String>
+<sys:String x:Key="BillTendered">Tendered</sys:String>
+<sys:String x:Key="BillRemaining">Remaining</sys:String>
+<sys:String x:Key="BillExactPaid">Fully paid</sys:String>
+<sys:String x:Key="BillOverpaid">Extra amount entered. Adjust the payments to match the grand total.</sys:String>
+<sys:String x:Key="BillPaymentHeading">Payment</sys:String>
+<sys:String x:Key="BillAddPayment">＋ Add payment</sys:String>
+<sys:String x:Key="BillPaymentEmpty">No payment added yet. Add the amount received.</sys:String>
+<sys:String x:Key="BillReferenceHint">Reference (optional)</sys:String>
+<sys:String x:Key="BillUseRemaining">Remaining</sys:String>
+<sys:String x:Key="BillMethodCash">Cash</sys:String>
+<sys:String x:Key="BillMethodUpi">UPI</sys:String>
+<sys:String x:Key="BillMethodDebitCard">Debit Card</sys:String>
+<sys:String x:Key="BillMethodCreditCard">Credit Card</sys:String>
+<sys:String x:Key="BillCustomerHeading">Customer details (optional)</sys:String>
+<sys:String x:Key="BillCustomerName">Name</sys:String>
+<sys:String x:Key="BillCustomerPhone">Phone</sys:String>
+<sys:String x:Key="BillCustomerAddress">Address</sys:String>
+<sys:String x:Key="BillCustomerGstin">GSTIN</sys:String>
+<sys:String x:Key="BillIssuesHeading">PLEASE CHECK</sys:String>
+<sys:String x:Key="BillGenerate">GENERATE INVOICE</sys:String>
+<sys:String x:Key="BillGenerating">Saving invoice…</sys:String>
+<sys:String x:Key="BillSuccessEyebrow">INVOICE SAVED</sys:String>
+<sys:String x:Key="BillNewBill">Start new bill</sys:String>
+<sys:String x:Key="BillPrint">Print</sys:String>
+<sys:String x:Key="BillPrintNotReady">Printing is not set up yet. The invoice is saved safely.</sys:String>
+<sys:String x:Key="BillKeyboardHint">F2 search · Enter add · Delete remove · Ctrl+Enter generate</sys:String>
+<sys:String x:Key="BillStatusAddedFormat">Added {0}.</sys:String>
+<sys:String x:Key="BillStatusNotFound">No matching medicine was found.</sys:String>
+<sys:String x:Key="BillStatusSelectResult">Press Enter again to add the highlighted medicine.</sys:String>
+<sys:String x:Key="BillStatusCommittedFormat">Invoice {0} is saved.</sys:String>
+<sys:String x:Key="BillErrorServiceUnavailable">Billing is temporarily unavailable. Please try again. If this continues, contact support.</sys:String>
+<sys:String x:Key="BillErrorFinalizeFailed">The invoice could not be saved. Nothing was deducted. Please check the messages and try again.</sys:String>
+<sys:String x:Key="BillErrorQuantityRequired">Enter a quantity.</sys:String>
+<sys:String x:Key="BillErrorQuantityNumber">Enter a valid quantity.</sys:String>
+<sys:String x:Key="BillErrorQuantityPositive">Quantity must be greater than zero.</sys:String>
+<sys:String x:Key="BillErrorQuantityDecimals">Quantity can have at most 3 decimal places.</sys:String>
+<sys:String x:Key="BillErrorQuantityLarge">The quantity is too large.</sys:String>
+<sys:String x:Key="BillErrorMoneyRequired">Enter an amount.</sys:String>
+<sys:String x:Key="BillErrorMoneyNumber">Enter a valid amount.</sys:String>
+<sys:String x:Key="BillErrorMoneyPositive">Amount must be greater than zero.</sys:String>
+<sys:String x:Key="BillErrorMoneyDecimals">Amount can have at most 2 decimal places.</sys:String>
+<sys:String x:Key="BillErrorMoneyLarge">The amount is too large.</sys:String>
+
+<!-- ===== Live paper preview ===== -->
+<sys:String x:Key="BillPreviewButton">Live preview</sys:String>
+<sys:String x:Key="BillPreviewWindowTitle">ORVA — Live Invoice Preview</sys:String>
+<sys:String x:Key="BillPaperFormatLabel">Paper</sys:String>
+<sys:String x:Key="BillPaper58">58 mm receipt</sys:String>
+<sys:String x:Key="BillPaper80">80 mm receipt</sys:String>
+<sys:String x:Key="BillPaperA4">A4 page</sys:String>
+<sys:String x:Key="BillPaperA5">A5 page</sys:String>
+<sys:String x:Key="BillZoom">Zoom</sys:String>
+<sys:String x:Key="BillPreviewEmpty">The paper preview appears here after the first medicine is added.</sys:String>
+<sys:String x:Key="BillPreviewPendingNumber">Invoice number will be assigned after generation</sys:String>
+<sys:String x:Key="BillPreviewPendingDate">Date &amp; time will be assigned after generation</sys:String>
+<sys:String x:Key="BillInvoiceWord">INVOICE</sys:String>
+<sys:String x:Key="BillInvoiceNoLabel">Invoice no.</sys:String>
+<sys:String x:Key="BillIssuedAtLabel">Date &amp; time</sys:String>
+<sys:String x:Key="BillBillTo">Bill to</sys:String>
+<sys:String x:Key="BillBatchWord">Batch</sys:String>
+<sys:String x:Key="BillExpiryWord">Exp</sys:String>
+<sys:String x:Key="BillDrugLicenceShort">D.L. No.</sys:String>
+<sys:String x:Key="BillItemWord">ITEM</sys:String>
+<sys:String x:Key="BillQtyWord">QTY</sys:String>
+<sys:String x:Key="BillRateWord">RATE</sys:String>
+<sys:String x:Key="BillAmountWord">Amount</sys:String>
+<sys:String x:Key="BillPaymentsWord">Payments</sys:String>
+<sys:String x:Key="BillAuthorisedSignatory">Authorised signatory</sys:String>
+<sys:String x:Key="BillThankYou">Thank you. Please take care.</sys:String>
+<sys:String x:Key="BillSoftwareLine">ORVA · RINDLE WORKS</sys:String>
+
+<!-- ===== Settings & Tax Configuration (Stage 1) ===== -->
+<sys:String x:Key="PageSettingsTitle">Settings</sys:String>
+<sys:String x:Key="PageSettingsEyebrow">ORVA  /  SHOP &amp; TAX CONFIGURATION</sys:String>
+<sys:String x:Key="SettingsShopSection">Shop profile &amp; GST registration</sys:String>
+<sys:String x:Key="SettingsShopHint">Your shop's State Code is required for GST place-of-supply checks. Invoice prefix must be 1 to 3 characters to stay within the 16-character GST Rule 46 limit.</sys:String>
+<sys:String x:Key="SettingsShopName">Shop name *</sys:String>
+<sys:String x:Key="SettingsInvoicePrefix">Invoice prefix (1–3 chars) *</sys:String>
+<sys:String x:Key="SettingsShopState">State *</sys:String>
+<sys:String x:Key="SettingsStateCode">GST state code</sys:String>
+<sys:String x:Key="SettingsShopGstin">Shop GSTIN (if registered)</sys:String>
+<sys:String x:Key="SettingsDrugLicence">Drug licence number</sys:String>
+<sys:String x:Key="SettingsSaveShop">SAVE SHOP PROFILE</sys:String>
+<sys:String x:Key="SettingsTaxSection">Shop tax configuration</sys:String>
+<sys:String x:Key="SettingsTaxHint">Confirm these settings with your CA before enabling billing. ORVA never guesses tax pricing modes or GST rates.</sys:String>
+<sys:String x:Key="SettingsTaxConfigured">Configured</sys:String>
+<sys:String x:Key="SettingsTaxNotConfigured">Not configured</sys:String>
+<sys:String x:Key="SettingsTaxPricingMode">Tax pricing mode *</sys:String>
+<sys:String x:Key="SettingsPricingInclusive">Tax inclusive (MRP includes GST)</sys:String>
+<sys:String x:Key="SettingsPricingExclusive">Tax exclusive (GST added to price)</sys:String>
+<sys:String x:Key="SettingsDefaultSupplyType">Default supply type *</sys:String>
+<sys:String x:Key="SettingsSupplyIntra">Intra-state (CGST + SGST)</sys:String>
+<sys:String x:Key="SettingsSupplyInter">Inter-state (IGST)</sys:String>
+<sys:String x:Key="SettingsRoundOffMode">Invoice round-off *</sys:String>
+<sys:String x:Key="SettingsRoundOffNone">None (exact paise)</sys:String>
+<sys:String x:Key="SettingsRoundOffNearest">Nearest rupee (₹1)</sys:String>
+<sys:String x:Key="SettingsConfirmTaxConfigured">I confirm these shop tax settings have been verified and are ready for billing</sys:String>
+<sys:String x:Key="SettingsSaveTax">SAVE TAX SETTINGS</sys:String>
+<sys:String x:Key="SettingsMedicineTaxSection">Medicine GST &amp; HSN configuration</sys:String>
+<sys:String x:Key="SettingsMedicineTaxHint">Each medicine must have its GST rate explicitly verified before it can be billed. Unconfigured medicines are never silently treated as 0% GST exempt.</sys:String>
+<sys:String x:Key="SettingsFindMedicine">Find medicine or HSN</sys:String>
+<sys:String x:Key="SettingsSelectMedicinePrompt">Select a medicine above to configure its HSN and GST rate.</sys:String>
+<sys:String x:Key="SettingsMedicineHsn">HSN code (4–8 digits, optional)</sys:String>
+<sys:String x:Key="SettingsMedicineGstPercent">GST rate (%) *</sys:String>
+<sys:String x:Key="SettingsMedicineConfirmConfigured">Mark this medicine's GST rate as explicitly verified and configured</sys:String>
+<sys:String x:Key="SettingsSaveMedicineTax">SAVE MEDICINE TAX</sys:String>
+<sys:String x:Key="SettingsSavedSuccess">Settings saved and recorded in the audit log.</sys:String>
+
+<!-- ===== Stage 2 Inventory, Import & Backup Strings ===== -->
+<sys:String x:Key="InvLowStockAlerts">LOW STOCK</sys:String>
+<sys:String x:Key="InvExpiryAlerts">EXPIRY ALERTS</sys:String>
+<sys:String x:Key="InvFilterAll">All stock</sys:String>
+<sys:String x:Key="InvFilterLowStock">Low stock</sys:String>
+<sys:String x:Key="InvFilterExpiring">Expiring (≤90d)</sys:String>
+<sys:String x:Key="InvFilterExpired">Expired</sys:String>
+<sys:String x:Key="InvEditMedicineButton">Edit medicine</sys:String>
+<sys:String x:Key="InvAdjustStockButton">Adjust stock</sys:String>
+<sys:String x:Key="InvImportStockButton">Import stock file</sys:String>
+<sys:String x:Key="InvAdjustStockTitle">Adjust batch stock</sys:String>
+<sys:String x:Key="InvCurrentQuantity">CURRENT QUANTITY</sys:String>
+<sys:String x:Key="InvDifferenceLabel">DIFFERENCE</sys:String>
+<sys:String x:Key="InvCountedQuantity">Actual counted quantity *</sys:String>
+<sys:String x:Key="InvAdjustmentReason">Reason for adjustment *</sys:String>
+<sys:String x:Key="InvConfirmAdjustment">SAVE ADJUSTMENT</sys:String>
+<sys:String x:Key="InvEditMedicineTitle">Edit medicine details</sys:String>
+<sys:String x:Key="InvGenericName">Generic name</sys:String>
+<sys:String x:Key="InvBrandName">Brand name</sys:String>
+<sys:String x:Key="InvStrength">Strength</sys:String>
+<sys:String x:Key="InvDosageForm">Dosage form</sys:String>
+<sys:String x:Key="InvLowStockThreshold">Minimum stock alert level</sys:String>
+<sys:String x:Key="InvMedicineActive">Medicine is active for billing and inventory</sys:String>
+<sys:String x:Key="InvSaveMedicine">SAVE MEDICINE</sys:String>
+<sys:String x:Key="InvImportStockTitle">Import StockData.json</sys:String>
+<sys:String x:Key="InvImportStockNotice">Importing a stock file replaces current medicine stock only. Historical invoices, purchases, and payment records are never deleted.</sys:String>
+<sys:String x:Key="InvChooseFile">Choose file</sys:String>
+<sys:String x:Key="InvImportPreviewHeading">Import preview</sys:String>
+<sys:String x:Key="InvConfirmDifferentShop">I understand this file is from another shop and want to import its inventory only</sys:String>
+<sys:String x:Key="InvConfirmImport">REPLACE INVENTORY</sys:String>
+<sys:String x:Key="BackupSectionHeading">Complete shop backup &amp; restore</sys:String>
+<sys:String x:Key="BackupSectionHint">ShopBackup.shopbackup saves your entire local shop database (invoices, purchases, inventory, returns, and settings). Copy it to a USB drive regularly.</sys:String>
+<sys:String x:Key="BackupLastLabel">LAST BACKUP</sys:String>
+<sys:String x:Key="BackupStatusLabel">BACKUP STATUS</sys:String>
+<sys:String x:Key="BackupNowButton">Create backup now</sys:String>
+<sys:String x:Key="BackupExportButton">Export Complete Shop Backup</sys:String>
+<sys:String x:Key="BackupRestoreButton">Restore Complete Shop Backup</sys:String>
+<sys:String x:Key="BackupRestoreTitle">Restore complete shop backup</sys:String>
+<sys:String x:Key="BackupRestoreWarning">Restoring a backup replaces your entire current local shop database. ORVA creates a safety backup first.</sys:String>
+<sys:String x:Key="BackupPreviewHeading">Backup preview</sys:String>
+<sys:String x:Key="BackupConfirmReplace">I understand this will replace the current local shop database</sys:String>
+<sys:String x:Key="BackupConfirmRestore">RESTORE SHOP BACKUP</sys:String>
+
+<!-- ===== Stage 3 Returns, Archive, Reports, CSV Import & Subscription ===== -->
+<sys:String x:Key="PageInvoicesTitle">Invoices</sys:String>
+<sys:String x:Key="PageInvoicesEyebrow">ORVA  /  INVOICE ARCHIVE</sys:String>
+<sys:String x:Key="PageReturnsTitle">Sales Returns</sys:String>
+<sys:String x:Key="PageReturnsEyebrow">ORVA  /  RETURNS &amp; QUARANTINE</sys:String>
+<sys:String x:Key="PageRecordsTitle">Records &amp; Tax</sys:String>
+<sys:String x:Key="PageRecordsEyebrow">ORVA  /  REGISTERS &amp; CA EXPORTS</sys:String>
+<sys:String x:Key="PageSubscriptionTitle">Subscription &amp; Support</sys:String>
+<sys:String x:Key="PageSubscriptionEyebrow">ORVA  /  COMMERCIAL LICENCE</sys:String>
+<sys:String x:Key="RetFindInvoice">Find original invoice</sys:String>
+<sys:String x:Key="RetSelectPrompt">Select an invoice on the left to start a return</sys:String>
+<sys:String x:Key="RetQuarantineNotice">Returned medicines default to QUARANTINE and do not re-enter sellable stock unless explicitly verified as eligible for RESTOCK.</sys:String>
+<sys:String x:Key="RetReasonLabel">Return reason *</sys:String>
+<sys:String x:Key="RetRefundMethod">Refund method *</sys:String>
+<sys:String x:Key="RetPreviewButton">Preview return</sys:String>
+<sys:String x:Key="RetFinalizeButton">FINALIZE RETURN</sys:String>
+<sys:String x:Key="InvCancelInvoice">Cancel invoice</sys:String>
+<sys:String x:Key="RepExportCsv">Export CSV</sys:String>
+<sys:String x:Key="RepPurchasesTab">Purchase Register</sys:String>
+<sys:String x:Key="RepGstTab">GST Summary</sys:String>
+<sys:String x:Key="RepValuationTab">Stock Valuation</sys:String>
+<sys:String x:Key="RepExpensesTab">Expenses</sys:String>
+<sys:String x:Key="RepAddExpense">Add expense</sys:String>
+<sys:String x:Key="CatImportButton">Import CSV</sys:String>
+<sys:String x:Key="CatImportTitle">Import medicine catalogue (CSV)</sys:String>
+<sys:String x:Key="CatImportHint">Import medicines and opening stock from Excel/Marg CSV exports. Existing batches are incremented additively.</sys:String>
+<sys:String x:Key="CatDownloadTemplate">Download template</sys:String>
+<sys:String x:Key="CatMarkGstConfigured">Mark provided CSV GST rates as explicitly verified and configured</sys:String>
+<sys:String x:Key="CatConfirmImport">IMPORT CATALOGUE</sys:String>
+<sys:String x:Key="SubCurrentStatus">CURRENT LICENCE STATUS</sys:String>
+<sys:String x:Key="SubRefreshButton">Refresh Subscription</sys:String>
+<sys:String x:Key="SubChoosePlan">Choose a subscription plan</sys:String>
+<sys:String x:Key="SubAmountPaid">Amount paid (₹)</sys:String>
+<sys:String x:Key="SubUtrOptional">UPI Transaction Reference / UTR (optional)</sys:String>
+<sys:String x:Key="SubNotifyWhatsapp">✓  I've paid — Notify support</sys:String>
+<sys:String x:Key="SubActivationSection">Licence activation</sys:String>
+<sys:String x:Key="SubUsername">Username (e.g. @shop01)</sys:String>
+<sys:String x:Key="SubActivationCode">Activation code</sys:String>
+<sys:String x:Key="SubRegistryUrl">Licence registry URL (HTTPS licenses.csv)</sys:String>
+<sys:String x:Key="SubSaveActivation">SAVE LICENCE</sys:String>
+    <sys:String x:Key="InvArchiveTitle">Invoice Archive</sys:String>
+    <sys:String x:Key="InvArchiveSubtitle">Search issued bills, reprint receipts, export registers, or safely cancel invoices</sys:String>
+    <sys:String x:Key="InvSearchButton">Search</sys:String>
+    <sys:String x:Key="InvCancelButton">Cancel Invoice</sys:String>
+    <sys:String x:Key="BillSuccessStamp">SAVED</sys:String>
+    <sys:String x:Key="BillSearchNoResults">No matching medicines. Check the spelling or search by name.</sys:String>
+    <sys:String x:Key="StockSavedDone">Done</sys:String>
+    <sys:String x:Key="SubPlanMonthly">Monthly&#10;1 month</sys:String>
+    <sys:String x:Key="SubPlanQuarterly">Quarterly&#10;3 months</sys:String>
+    <sys:String x:Key="SubPlanAnnual">Annual&#10;12 months</sys:String>
+    <sys:String x:Key="SubPlanOneTime">One-Time&#10;Single licence</sys:String>
+    <sys:String x:Key="SubCopyPhone">Copy Support Phone</sys:String>
+    <sys:String x:Key="SubCopyUpi">Copy UPI ID</sys:String>
+    <sys:String x:Key="CommonFrom">From:</sys:String>
+    <sys:String x:Key="CommonTo">To:</sys:String>
+    <sys:String x:Key="CommonApplyFilter">Apply Filter</sys:String>
+    <sys:String x:Key="CommonCurrentFy">Current FY</sys:String>
+    <sys:String x:Key="CommonAllDates">All Dates</sys:String>
+    <sys:String x:Key="CommonExportExcel">Export Excel</sys:String>
+    <sys:String x:Key="CommonExportPdf">Export PDF</sys:String>
+    <sys:String x:Key="InvReprintButton">Reprint Bill</sys:String>
+    <sys:String x:Key="InvDetailLabel">INVOICE DETAIL</sys:String>
+    <sys:String x:Key="InvDetailPrompt">Select an invoice to inspect items</sys:String>
+    <sys:String x:Key="InvCancelReasonLabel">Cancel Reason:</sys:String>
+    <sys:String x:Key="RepReturnsTab">Sales Returns</sys:String>
+    <sys:String x:Key="ExpCategory">Category</sys:String>
+    <sys:String x:Key="ExpDescription">Description</sys:String>
+    <sys:String x:Key="ExpAmount">Amount (₹)</sys:String>
+    <sys:String x:Key="ExpDocRef">Document Ref</sys:String>
+    <sys:String x:Key="ExpPayment">Payment</sys:String>
+    <sys:String x:Key="SetOpsTitle">Printing, Backup Retention &amp; Subscription Support</sys:String>
+    <sys:String x:Key="SetDefaultPaper">Default Invoice Paper Format</sys:String>
+    <sys:String x:Key="SetBackupRetention">Automatic Backup Retention (Days)</sys:String>
+    <sys:String x:Key="SetSupportPhones">Support Phone Number(s)</sys:String>
+    <sys:String x:Key="SetSupportWhatsapp">Support WhatsApp Number (with country code)</sys:String>
+    <sys:String x:Key="SetMerchantUpi">Merchant UPI ID (for Subscription Renewal)</sys:String>
+    <sys:String x:Key="SetMerchantPayee">Merchant UPI Payee Name</sys:String>
+    <sys:String x:Key="SetSavePrefs">Save Preferences</sys:String>
+    <sys:String x:Key="BillAmountInvalid">Enter a valid amount.</sys:String>
+    <sys:String x:Key="BillAmountPositive">Amount must be greater than zero.</sys:String>
+    <sys:String x:Key="BillAmountPrecision">Amount can have at most two decimal places.</sys:String>
+    <sys:String x:Key="BillAmountTooLarge">Amount is too large.</sys:String>
+    <sys:String x:Key="BillQuantityInvalid">Enter a valid quantity.</sys:String>
+    <sys:String x:Key="BillQuantityPositive">Quantity must be greater than zero.</sys:String>
+    <sys:String x:Key="BillQuantityPrecision">Quantity can have at most three decimal places.</sys:String>
+    <sys:String x:Key="BillQuantityTooLarge">Quantity is too large.</sys:String>
+    <sys:String x:Key="NavHome">Home</sys:String>
+    <sys:String x:Key="NavAboutUs">About Us</sys:String>
+    <sys:String x:Key="PageHomeTitle">Home</sys:String>
+    <sys:String x:Key="PageHomeEyebrow">ORVA  /  HOME</sys:String>
+    <sys:String x:Key="PageAboutTitle">About Us</sys:String>
+    <sys:String x:Key="PageAboutEyebrow">ORVA  /  RINDLE WORKS</sys:String>
+    <sys:String x:Key="QuickStartBilling">Start Billing</sys:String>
+    <sys:String x:Key="QuickAddStock">+ Add Stock</sys:String>
+    <sys:String x:Key="MenuLabel">NAVIGATION</sys:String>
+</ResourceDictionary>

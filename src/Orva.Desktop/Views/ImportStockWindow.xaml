@@ -1,0 +1,89 @@
+<Window x:Class="Orva.Views.ImportStockWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fx="clr-namespace:Orva.Controls"
+        Title="ORVA — Import Stock File" Width="640" Height="620" MinWidth="540" MinHeight="520"
+        WindowStartupLocation="CenterOwner" ResizeMode="CanResize"
+        Background="{StaticResource Paper}" FontFamily="{StaticResource UiBodyFont}">
+    <Grid fx:OrvaFx.Reveal="Dialog" Margin="26">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="INVENTORY  /  PORTABLE STOCK TRANSFER" Style="{StaticResource MetadataText}" />
+            <TextBlock Text="{DynamicResource InvImportStockTitle}" Style="{StaticResource DisplayHeading}" FontSize="24" Margin="0,4,0,4" />
+            <TextBlock Text="{DynamicResource InvImportStockNotice}" Foreground="{StaticResource Muted}" FontSize="12" TextWrapping="Wrap" />
+            <Border Height="2" Background="{StaticResource Vermilion}" Width="54" HorizontalAlignment="Left" Margin="0,12,0,0" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,14" LastChildFill="True">
+                    <Button DockPanel.Dock="Right" Content="{DynamicResource InvChooseFile}" Style="{StaticResource SecondaryButton}" MinWidth="130" Margin="10,0,0,0" Click="ChooseFile_Click" />
+                    <TextBox x:Name="FilePathBox" IsReadOnly="True" Background="{StaticResource PaperRecessed}" />
+                </DockPanel>
+
+                <Border x:Name="PreviewCard" Visibility="Collapsed" Background="{StaticResource PaperRaised}" BorderBrush="{StaticResource Rule}" BorderThickness="1" Padding="16" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource InvImportPreviewHeading}" Style="{StaticResource SectionHeading}" FontSize="15" Margin="0,0,0,10" />
+                        <TextBlock x:Name="SourceShopText" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,4" />
+                        <TextBlock x:Name="FileMetaText" FontSize="11.5" Foreground="{StaticResource Muted}" Margin="0,0,0,12" />
+
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Background="#F6F0E5" Padding="10">
+                                <StackPanel>
+                                    <TextBlock Text="MEDICINES" Style="{StaticResource MetadataText}" />
+                                    <TextBlock x:Name="MedCountText" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource Teal}" />
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Background="#F6F0E5" Padding="10">
+                                <StackPanel>
+                                    <TextBlock Text="BATCHES" Style="{StaticResource MetadataText}" />
+                                    <TextBlock x:Name="BatchCountText" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource Teal}" />
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="4" Background="#F6F0E5" Padding="10">
+                                <StackPanel>
+                                    <TextBlock Text="ZEROED" Style="{StaticResource MetadataText}" />
+                                    <TextBlock x:Name="ZeroedCountText" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource Vermilion}" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <TextBlock x:Name="ChangeSummaryText" FontSize="12.5" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+                        <Border x:Name="WarningBanner" Visibility="Collapsed" Background="#F6E4DE" BorderBrush="{StaticResource Vermilion}" BorderThickness="1" Padding="10" Margin="0,0,0,10">
+                            <TextBlock x:Name="WarningText" Foreground="{StaticResource Ink}" FontSize="12" TextWrapping="Wrap" />
+                        </Border>
+
+                        <CheckBox x:Name="ConfirmDifferentShopCheck"
+                                  Visibility="Collapsed"
+                                  Content="{DynamicResource InvConfirmDifferentShop}"
+                                  FontSize="12.5"
+                                  FontWeight="SemiBold"
+                                  Margin="0,4,0,6"
+                                  Checked="ConfirmDifferentShop_Changed"
+                                  Unchecked="ConfirmDifferentShop_Changed" />
+                    </StackPanel>
+                </Border>
+
+                <TextBlock x:Name="ErrorText" Foreground="{StaticResource Danger}" FontSize="12.5" TextWrapping="Wrap" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <DockPanel Grid.Row="2" Margin="0,14,0,0">
+            <Button Content="{DynamicResource Cancel}" Style="{StaticResource SecondaryButton}" MinWidth="100" IsCancel="True" Click="Cancel_Click" />
+            <Button x:Name="ImportButton" Content="{DynamicResource InvConfirmImport}" Style="{StaticResource PrimaryButton}" DockPanel.Dock="Right" MinWidth="190" IsEnabled="False" IsDefault="True" Click="Import_Click" />
+        </DockPanel>
+    </Grid>
+</Window>
