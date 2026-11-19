@@ -49,4 +49,7 @@
     <EmbeddedResource Include="Infrastructure\Database\003_PerformanceIndexes.sql"
                       LogicalName="Orva.Infrastructure.Database.003_PerformanceIndexes.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web" />
+  </ItemGroup>
 </Project>
